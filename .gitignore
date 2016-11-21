@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+/Snails/.vs/config/applicationhost.config
+/Snails/packages
+/Snails/WebApplication1/bin
+/Snails/WebApplication1/obj/Debug
