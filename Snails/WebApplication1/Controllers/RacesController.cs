@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,20 +9,13 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    public class SnailsController : ApiController
+    public class RacesController : ApiController
     {
-        private readonly SnailsRepository _repository;
+        private readonly RacesRepository _repository;
 
-        public SnailsController(SnailsRepository snailsRepository)
+        public RacesController(RacesRepository repository)
         {
-            _repository = snailsRepository;
-        }
-
-        [HttpGet]
-        public Task<HttpResponseMessage> Get(int page, int size)
-        {
-            var snail = _repository.Get(page, size);
-            return Task.FromResult(Request.CreateResponse(HttpStatusCode.OK, snail));
+            _repository = repository;
         }
 
         [HttpGet]
@@ -31,16 +26,24 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public Task<HttpResponseMessage> Create([FromBody] Snail snail)
+        public Task<HttpResponseMessage> Create([FromBody] Race race)
         {
-            _repository.Create(snail);
+            _repository.Create(race);
             return Task.FromResult(Request.CreateResponse(HttpStatusCode.Created));
         }
 
         [HttpPut]
-        public Task<HttpResponseMessage> Update([FromBody] Snail snail)
+        public Task<HttpResponseMessage> Update([FromBody] Race race)
         {
-            _repository.Update(snail);
+            _repository.Update(race);
+            return Task.FromResult(Request.CreateResponse(HttpStatusCode.OK));
+        }
+
+        [HttpPost]
+        [Route("api/races/{id}/snails")]
+        public Task<HttpResponseMessage> SetSnails(int id, [FromBody] List<Snail> snails)
+        {
+            _repository.SetSnails(id, snails);
             return Task.FromResult(Request.CreateResponse(HttpStatusCode.OK));
         }
 

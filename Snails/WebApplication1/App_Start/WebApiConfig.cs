@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Reflection;
 using System.Web.Http;
+using Autofac;
+using Autofac.Integration.WebApi;
+using WebApplication1.Filters;
 
 namespace WebApplication1
 {
@@ -9,18 +10,6 @@ namespace WebApplication1
     {
         public static void Register(HttpConfiguration config)
         {
-            //var builder = new ContainerBuilder();
-
-            //builder.RegisterApiControllers();
-
-            //builder.RegisterType<SnailsRepository>().AsSelf().SingleInstance();
-
-            //var container = builder.Build();
-
-            //config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-
-            config.MessageHandlers.Add(new MessageHandler());
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -29,6 +18,27 @@ namespace WebApplication1
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.MessageHandlers.Add(new MessageHandler());
+            config.Filters.Add(new SnailsAuthorizationFilterAttribute());
+            config.Filters.Add(new NotFoundExceptionAttribute());
+            config.Filters.Add(new DefaultExceptionAttribute());
+
+            var builder = new ContainerBuilder();
+
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterWebApiFilterProvider(config);
+
+            builder.RegisterType<SnailsRepository>().AsSelf().SingleInstance();
+            builder.RegisterType<RacesRepository>().AsSelf().SingleInstance();
+
+            var container = builder.Build();
+
+            var repo = container.Resolve<SnailsRepository>();
+
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+            config.EnsureInitialized();
         }
     }
 }

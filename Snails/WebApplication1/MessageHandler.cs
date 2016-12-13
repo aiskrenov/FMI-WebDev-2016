@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace WebApplication1
 {
@@ -13,7 +11,14 @@ namespace WebApplication1
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            return base.SendAsync(request, cancellationToken);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var result = base.SendAsync(request, cancellationToken);
+            stopwatch.Stop();
+
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+
+            return result;
         }
     }
 }
