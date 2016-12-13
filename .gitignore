@@ -32,3 +32,7 @@
 /Snails/WebApplication1/bin
 /Snails/WebApplication1/obj/Debug
 /Snails/Snails.Core/obj/Debug
+/Snails/Snails.Tests.Acceptance/bin/Debug
+/Snails/Snails.Tests.Acceptance/obj/Debug
+/Snails/Snails.Tests.Unit/bin/Debug
+/Snails/Snails.Tests.Unit/obj/Debug

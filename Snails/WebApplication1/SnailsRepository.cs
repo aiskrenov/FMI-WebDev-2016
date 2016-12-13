@@ -7,7 +7,7 @@ namespace WebApplication1
 {
     public class SnailsRepository
     {
-        private static Dictionary<int, Snail> Snails = new Dictionary<int, Snail>(); 
+        internal static Dictionary<int, Snail> Snails = new Dictionary<int, Snail>(); 
 
         public Snail Get(int id)
         {
